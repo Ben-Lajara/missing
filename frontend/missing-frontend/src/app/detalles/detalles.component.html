@@ -1,0 +1,67 @@
+<div class="container mt-4">
+    <h2>{{anuncio.titulo}}</h2>
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="d-flex"> <!-- Contenedor Flexbox -->
+                <div class="info me-auto"> <!-- Info a la izquierda -->
+                  <ul class="list-group list-group-flush bg-dark">
+                    <li class="list-group-item bg-dark text-white d-flex">
+                      <span><i class="bi bi-broadcast"></i></span>
+                      &nbsp;
+                      <span>{{anuncio.raza}}</span>
+                    </li>
+                    <li class="list-group-item bg-dark text-white d-flex">
+                      <span><i class="bi bi-palette-fill"></i></span>
+                      &nbsp;
+                      <span>{{anuncio.color}}</span>
+                    </li>
+                    <li class="list-group-item bg-dark text-white d-flex">
+                      <span><i class="bi bi-arrows-fullscreen"></i></span>
+                      &nbsp;
+                      <span>{{anuncio.tamano}}</span>
+                    </li>
+                    <li class="list-group-item bg-dark text-white d-flex">
+                      <span><i class="bi bi-flag-fill"></i></span>
+                      &nbsp;
+                      <span *ngIf="anuncio.collar == true">Lleva collar</span>
+                      <span *ngIf="anuncio.collar == false">No lleva collar</span>
+                    </li>
+                    <li class="list-group-item bg-dark text-white d-flex">
+                      <span><i class="bi bi-activity"></i></span>
+                      &nbsp;
+                      <span *ngIf="anuncio.vacunado == true">Está vacunado</span>
+                      <span *ngIf="anuncio.vacunado == false">No está vacunado</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="image-container ms-auto"> <!-- Image-container a la derecha -->
+                  <img [src]="'http://localhost:8080'+ anuncio.imagen" class="img-thumbnail" alt="Imagen del anuncio">
+                </div>
+              </div>
+            <div class="alert alert-info d-flex align-items-center mt-2" role="alert">
+                <i class="bi bi-calendar3 me-2"></i> Visto por última vez el {{anuncio.fecha | date: 'dd/MM/yyyy'}}
+            </div>
+            <p>{{anuncio.descripcion}}</p>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="card text-bg-secondary">
+                <div class="card-body">
+                    <ul>
+                        <li class="list-group-item d-flex">
+                            <span><i class="bi bi-person-circle me-2"></i></span>
+                            &nbsp;
+                            <span>{{anuncio.nombre}}</span>
+                        </li>
+                        <li class="list-group-item d-flex">
+                            <span><i class="bi bi-telephone me-2"></i></span>
+                            &nbsp;
+                            <span>{{anuncio.telefono}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  

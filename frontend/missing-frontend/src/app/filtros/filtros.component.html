@@ -1,0 +1,15 @@
+<div class="d-flex align-items-center bg-dark p-3 rounded shadow-sm">
+    <select #size class="form-select form-select-dark me-2" id="tamList" (change)="setNewSize(size.value)">
+      <option value="0">Selecciona un tamaño</option>
+      <option value="Pequeño">Pequeño</option>
+      <option value="Mediano">Mediano</option>
+      <option value="Grande">Grande</option>
+    </select>
+    <input type="text" class="form-control form-control-dark me-2" id="color" placeholder="Color" #color (keyup)="setNewColor(color.value)">
+    <input type="text" class="form-control form-control-dark me-2" id="raza" placeholder="Raza" #race (keyup)="setNewRace(race.value)">
+    <div class="form-check form-switch text-light">
+      <input #collar class="form-check-input" type="checkbox" role="switch" id="collar" (change)="setHasCollar(collar.checked)">
+      <label class="form-check-label" for="collar">Lleva collar</label>
+    </div>
+  </div>
+  

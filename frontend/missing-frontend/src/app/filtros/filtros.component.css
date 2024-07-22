@@ -1,0 +1,30 @@
+.form-select-dark,
+.form-control-dark {
+  background-color: #343a40;
+  border: 1px solid #495057;
+  color: #ffffff;
+}
+
+.form-select-dark:focus,
+.form-control-dark:focus {
+  background-color: #495057;
+  color: #ffffff;
+}
+
+.bg-dark {
+  background-color: #343a40 !important;
+}
+
+.text-light {
+  color: #f8f9fa !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.form-check-label {
+  white-space: nowrap; /* Evita que el texto se ajuste a la siguiente línea */
+  overflow: hidden; /* Oculta el texto que desborde el contenedor */
+  text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es demasiado largo */
+}
