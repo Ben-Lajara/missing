@@ -16,6 +16,14 @@ import {
   ImgCropperErrorEvent,
   STYLES as CROPPER_STYLES,
 } from '@alyle/ui/image-cropper';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import { Router } from '@angular/router';
 
 const STYLES = (_theme: ThemeVariables, selectors: SelectorsFn) => {
   const cropper = selectors(CROPPER_STYLES);
@@ -54,6 +62,14 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrl: './publicar.component.css',
   providers: [StyleRenderer],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms', style({ opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class PublicarComponent implements AfterViewInit, OnInit {
   anuncioForm!: UntypedFormGroup;
@@ -64,6 +80,11 @@ export class PublicarComponent implements AfterViewInit, OnInit {
   $$ = this.sRenderer.renderSheet(STYLES, 'root');
   croppedImage?: string | null = null;
   ready = false;
+  hoy = new Date();
+  maxDate = '';
+  hayCoordenadas = false;
+  hayImagen = false;
+  loading = false;
   @ViewChild(LyImageCropper) readonly cropper!: LyImageCropper;
   myConfig: ImgCropperConfig = {
     width: 350, // Default `250`
@@ -77,11 +98,19 @@ export class PublicarComponent implements AfterViewInit, OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private http: HttpClient,
-    readonly sRenderer: StyleRenderer
+    readonly sRenderer: StyleRenderer,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    //this.getUbicacion();
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    this.maxDate = `${yyyy}-${mm}-${dd}`;
+    this.hayCoordenadas = false;
+    this.hayImagen = false;
+    this.loading = false;
     this.anuncioForm = this.fb.group({
       titulo: ['', [Validators.required]],
       descripcion: ['', [Validators.required]],
@@ -134,6 +163,7 @@ export class PublicarComponent implements AfterViewInit, OnInit {
 
       this.latitud = lat;
       this.longitud = lng;
+      this.hayCoordenadas = true;
     });
   }
 
@@ -151,7 +181,7 @@ export class PublicarComponent implements AfterViewInit, OnInit {
     if (!e.dataURL) {
       return;
     }
-    // Convertir base64 a Blob
+    // Convierte base64 a Blob
     const base64Data = e.dataURL.split(',')[1]; // Elimina el prefijo de la cadena base64
     const contentType = e.dataURL.split(',')[0].split(':')[1].split(';')[0]; // Obtiene el tipo MIME de la imagen
     const byteCharacters = atob(base64Data);
@@ -162,13 +192,14 @@ export class PublicarComponent implements AfterViewInit, OnInit {
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], { type: contentType });
 
-    // Convertir Blob a File
-    const fileName = 'cropped_image.png'; // Puedes personalizar el nombre del archivo
+    // Convierte Blob a File
+    const fileName = 'cropped_image.png';
     const file = new File([blob], fileName, { type: contentType });
 
-    // Establecer el archivo recortado como el archivo seleccionado
+    // Establece el archivo recortado como el archivo seleccionado
     this.selectedFile = file;
     console.log('selectedFile', this.selectedFile);
+    this.hayImagen = true;
   }
   onLoaded(e: ImgCropperEvent) {
     console.log('img loaded', e);
@@ -198,11 +229,15 @@ export class PublicarComponent implements AfterViewInit, OnInit {
     formData.append('longitude', this.longitud.toString());
     formData.append('nomUsuario', localStorage.getItem('username') || '');
     console.log('formData', formData);
-
+    this.loading = true;
     this.http
       .post('http://localhost:8080/anuncio', formData)
       .subscribe((res) => {
         console.log('res', res);
+        setTimeout(() => {
+          this.loading = false;
+          this.router.navigate(['/perfil']);
+        }, 3000);
       });
   }
 }

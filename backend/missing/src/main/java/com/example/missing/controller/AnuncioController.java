@@ -5,6 +5,7 @@ import com.example.missing.model.Anuncio;
 import com.example.missing.model.Usuario;
 import com.example.missing.repository.AnuncioRepository;
 import com.example.missing.service.AnuncioService;
+import com.example.missing.service.JwtTokenProviderService;
 import com.example.missing.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,12 +32,15 @@ public class AnuncioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private JwtTokenProviderService jwtTokenProviderService;
+
     @GetMapping("/anuncios")
     public ResponseEntity<?> getAnuncios(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam Double radius) {
         List<Anuncio> anuncios = anuncioService.findWithinRadius(latitude, longitude, radius);
         List<AnuncioDTO> anunciosDTO = new ArrayList<>();
         for (Anuncio anuncio: anuncios) {
-            AnuncioDTO anuncioDTO = new AnuncioDTO(anuncio.getId(), anuncio.getTitulo(), anuncio.getDescripcion(), String.format("/images/%d", anuncio.getId()), anuncio.getFecha(), anuncio.getRaza(), anuncio.getColor(), anuncio.getTamano(), anuncio.getLatitud(), anuncio.getLongitud(), anuncio.getUsuario().getNombre(), anuncio.getUsuario().getApellidos(), anuncio.getUsuario().getTelefono());
+            AnuncioDTO anuncioDTO = new AnuncioDTO(anuncio.getId(), anuncio.getTitulo(), anuncio.getDescripcion(), String.format("/images/%d", anuncio.getId()), anuncio.getFecha(), anuncio.getRaza(), anuncio.getColor(), anuncio.getTamano(), anuncio.getCollar(), anuncio.getVacunado(), anuncio.getLatitud(), anuncio.getLongitud(), anuncio.getUsuario().getNomUsuario(), anuncio.getUsuario().getNombre(), anuncio.getUsuario().getApellidos(), anuncio.getUsuario().getTelefono());
             anunciosDTO.add(anuncioDTO);
         }
         return ResponseEntity.ok(anunciosDTO);
@@ -58,12 +62,42 @@ public class AnuncioController {
         Anuncio anuncio = anuncioRepository.findById(id);
         Usuario usuario = usuarioService.findByNomUsuario(anuncio.getUsuario().getNomUsuario());
         String imagenUrl = String.format("/images/%d", anuncio.getId());
-        AnuncioDTO anuncioDTO = new AnuncioDTO(anuncio.getId(), anuncio.getTitulo(), anuncio.getDescripcion(), imagenUrl, anuncio.getFecha(), anuncio.getRaza(), anuncio.getColor(), anuncio.getTamano(), anuncio.getCollar(), anuncio.getVacunado(), anuncio.getLatitud(), anuncio.getLongitud(), usuario.getNombre(), usuario.getApellidos(), usuario.getTelefono());
+        AnuncioDTO anuncioDTO = new AnuncioDTO(anuncio.getId(), anuncio.getTitulo(), anuncio.getDescripcion(), imagenUrl, anuncio.getFecha(), anuncio.getRaza(), anuncio.getColor(), anuncio.getTamano(), anuncio.getCollar(), anuncio.getVacunado(), anuncio.getLatitud(), anuncio.getLongitud(), usuario.getNomUsuario(), usuario.getNombre(), usuario.getApellidos(), usuario.getTelefono());
         return ResponseEntity.ok(anuncioDTO);
     }
 
+    @PutMapping("/anuncio")
+    public ResponseEntity<?> editAnuncio(@RequestParam Long id, @RequestParam String titulo, @RequestParam String descripcion,  @RequestParam String fecha, @RequestParam String raza, @RequestParam String color, @RequestParam String tamano, @RequestParam Boolean collar, @RequestParam Boolean vacunado,@RequestParam String nomUsuario, @RequestHeader("Authorization") String token) throws ParseException, IOException {
+       if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        if(!nomUsuario.equals(jwtTokenProviderService.getUsernameFromJwt(token))){
+            return new ResponseEntity<>(Collections.singletonMap("error", "Invalid or expired token"), HttpStatus.UNAUTHORIZED);
+        }
+        Usuario usuario = usuarioService.findByNomUsuario(nomUsuario);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date fechaFormateada = formatter.parse((String) fecha);
+        Anuncio anuncio = anuncioRepository.findById(id);
+        anuncio.setTitulo(titulo);
+        anuncio.setDescripcion(descripcion);
+        anuncio.setFecha(fechaFormateada);
+        anuncio.setRaza(raza);
+        anuncio.setColor(color);
+        anuncio.setTamano(tamano);
+        anuncio.setCollar(collar);
+        anuncio.setVacunado(vacunado);
+        anuncioRepository.save(anuncio);
+        return new ResponseEntity<>(Collections.singletonMap("status", "success"), HttpStatus.OK);
+    }
+
     @DeleteMapping("/anuncio")
-    public ResponseEntity<?> deleteAnuncio(@RequestParam Long id) {
+    public ResponseEntity<?> deleteAnuncio(@RequestParam Long id, @RequestParam String nomUsuario, @RequestHeader("Authorization") String token){
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        if(!nomUsuario.equals(jwtTokenProviderService.getUsernameFromJwt(token))){
+            return new ResponseEntity<>(Collections.singletonMap("error", "Invalid or expired token"), HttpStatus.UNAUTHORIZED);
+        }
         Anuncio anuncio = anuncioRepository.findById(id);
         anuncioRepository.delete(anuncio);
         return new ResponseEntity<>(Collections.singletonMap("status", "success"), HttpStatus.OK);

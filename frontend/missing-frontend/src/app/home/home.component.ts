@@ -1,11 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ParamsFiltrosService } from '../params-filtros.service';
+import {
+  animate,
+  query,
+  stagger,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
+  animations: [
+    trigger('listAnimation', [
+      transition('* <=> *', [
+        query(
+          ':enter',
+          [
+            style({ opacity: 0 }),
+            stagger('100ms', [animate('500ms', style({ opacity: 1 }))]),
+          ],
+          { optional: true }
+        ),
+      ]),
+    ]),
+  ],
 })
 export class HomeComponent implements OnInit {
   radio = 2;

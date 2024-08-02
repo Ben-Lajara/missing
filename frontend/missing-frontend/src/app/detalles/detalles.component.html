@@ -1,9 +1,9 @@
-<div class="container mt-4">
+<div [@fadeIn] class="container mt-4">
     <h2>{{anuncio.titulo}}</h2>
     <div class="row">
         <div class="col-12 col-md-8">
-            <div class="d-flex"> <!-- Contenedor Flexbox -->
-                <div class="info me-auto"> <!-- Info a la izquierda -->
+            <div class="d-flex">
+                <div class="info me-auto">
                   <ul class="list-group list-group-flush bg-dark">
                     <li class="list-group-item bg-dark text-white d-flex">
                       <span><i class="bi bi-broadcast"></i></span>
@@ -34,7 +34,7 @@
                     </li>
                   </ul>
                 </div>
-                <div class="image-container ms-auto"> <!-- Image-container a la derecha -->
+                <div class="image-container ms-auto">
                   <img [src]="'http://localhost:8080'+ anuncio.imagen" class="img-thumbnail" alt="Imagen del anuncio">
                 </div>
               </div>

@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Route } from '@angular/router';
@@ -6,6 +7,14 @@ import { ActivatedRoute, Route } from '@angular/router';
   selector: 'app-detalles',
   templateUrl: './detalles.component.html',
   styleUrl: './detalles.component.css',
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms', style({ opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class DetallesComponent implements OnInit {
   anuncio: any;

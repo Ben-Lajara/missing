@@ -1,0 +1,71 @@
+<div [@fadeIn] *ngIf="!loading" class="container mt-3">
+    <form (ngSubmit)="onSubmit()" class="form-group">
+        <div class="d-flex align-items-center justify-content-between">
+            <h2>Edita tu anuncio</h2>
+            <button type="button" class="btn btn-danger btn-sm" aria-label="Close" (click)="deleteAnuncio()">
+                <i class="bi bi-trash"></i> Eliminar anuncio
+            </button>
+        </div>
+        <div class="mb-3">
+            <label for="titulo">Título</label>
+            <input type="text" [(ngModel)]="titulo" name="titulo" class="form-control" id="titulo" placeholder="Título del anuncio">
+        </div>
+        <div class="mb-3">
+            <label for="descripcion">Descripción</label>
+            <textarea [(ngModel)]="descripcion" name="descripcion" class="form-control" id="descripcion" rows="3" placeholder="Descripción del anuncio"></textarea>
+        </div>
+        <div class="mb-3">
+            <h4>Características</h4>
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <label for="raza">Raza</label>
+                    <input type="text" [(ngModel)]="raza" name="raza" class="form-control" id="raza" placeholder="Raza">
+                </div>
+            
+                <div class="col-md-6 mb-2">
+                    <label for="color">Color</label>
+                    <input type="text" [(ngModel)]="color" name="color" class="form-control" id="color" placeholder="Color">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <label for="tamano">Tamaño</label>
+                    <input type="text" [(ngModel)]="tamano" name="tamano" class="form-control" id="tamano" placeholder="Tamaño">
+                </div>
+            
+                <div class="col-md-6 mb-2">
+                    <label for="fecha">Visto por última vez</label>
+                    <input type="date" name="fecha" [ngModel]="fecha | date:'yyyy-MM-dd'" (ngModelChange)="fecha = $event" [max]="hoy | date:'yyyy-MM-dd'" class="form-control" id="fecha">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="collar" name="collar" role="switch" id="collar">
+                        <label class="form-check-label" for="collar">Lleva collar</label>
+                      </div>
+                      
+                </div>
+            
+                <div class="col-md-6 mb-2">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="vacunado" name="vacunado" role="switch" id="vacunado">
+                        <label class="form-check-label" for="vacunado">Está vacunado</label>
+                      </div>
+                      
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100">Editar</button>
+    </form>
+    <div [@fade]="cambiosGuardados ? 'visible' : 'hidden'" class="alert alert-success mt-2" role="alert">
+        Los cambios se han guardado correctamente
+      </div>
+</div>
+
+<div *ngIf="loading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="spinner-grow" role="status">
+      <!--<span class="sr-only">Loading...</span>-->
+    </div>
+</div>

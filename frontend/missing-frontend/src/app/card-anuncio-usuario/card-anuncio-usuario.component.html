@@ -1,15 +1,17 @@
 <div class="card mt-2 mr-2 rounded">
     <img [src]="'http://localhost:8080'+ anuncio.imagen" class="card-img-top" alt="...">
+    <div class="card-header">
+        {{anuncio.titulo}}
+    </div>    
     <div class="card-body">
-      <h5 class="card-title">{{anuncio.titulo}}</h5>
-      <span class="card-text text-secondary mb-2">Visto por última vez el {{anuncio.fecha | date: 'dd/MM/yyyy'}}</span>
-      <p class="card-text">{{anuncio.descripcion}}</p>
-      <div class="card-text d-flex flex-wrap justify-content-center gap-2 mb-3">
-          <span class="badge rounded-pill text-bg-primary custom-badge">{{anuncio.raza}}</span>
-          <span class="badge rounded-pill text-bg-secondary custom-badge">{{anuncio.color}}</span>
-          <span class="badge rounded-pill text-bg-success custom-badge">{{anuncio.tamano}}</span>
+      <div class="alert alert-info" role="alert">Visto por última vez el {{anuncio.fecha | date: 'dd/MM/yyyy'}}</div>
+      <!--<p class="card-text">{{anuncio.descripcion}}</p>-->
+      <div class="card-text d-flex flex-wrap justify-content-center gap-2">
+        <span class="alert alert-warning rounded-pill tag">{{anuncio.raza}}</span>
+        <span class="alert alert-warning rounded-pill tag">{{anuncio.color}}</span>
+        <span class="alert alert-warning rounded-pill tag">{{anuncio.tamano}}</span>
       </div>
-      <button class="btn btn-danger w-100" (click)="deleteAnuncio()">Borrar</button>
+      <a [routerLink]="['/editar', anuncio.id]" class="btn btn-primary w-100">Editar</a>
     </div>
   </div>
 

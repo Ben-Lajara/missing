@@ -10,16 +10,4 @@ export class CardAnuncioUsuarioComponent {
   @Input() anuncio: any;
 
   constructor(private http: HttpClient) {}
-
-  deleteAnuncio() {
-    this.http
-      .delete('http://localhost:8080/anuncio', {
-        params: {
-          id: this.anuncio.id,
-        },
-      })
-      .subscribe((res) => {
-        console.log(res);
-      });
-  }
 }

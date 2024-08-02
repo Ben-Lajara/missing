@@ -13,6 +13,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { DetallesComponent } from './detalles/detalles.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Gestures
 import { HAMMER_GESTURE_CONFIG, HammerModule } from '@angular/platform-browser';
 
@@ -37,6 +38,7 @@ import { RazaPipe } from './raza.pipe';
 import { CollarPipe } from './collar.pipe';
 import { PerfilComponent } from './perfil/perfil.component';
 import { CardAnuncioUsuarioComponent } from './card-anuncio-usuario/card-anuncio-usuario.component';
+import { EditarComponent } from './editar/editar.component';
 
 @NgModule({
   declarations: [
@@ -55,9 +57,11 @@ import { CardAnuncioUsuarioComponent } from './card-anuncio-usuario/card-anuncio
     CollarPipe,
     PerfilComponent,
     CardAnuncioUsuarioComponent,
+    EditarComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     CommonModule,
     FormsModule,

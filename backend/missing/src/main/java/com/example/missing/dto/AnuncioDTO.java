@@ -21,6 +21,7 @@ public class AnuncioDTO {
     private Boolean vacunado;
     private Double latitud;
     private Double longitud;
+    private String nomUsuario;
     private String nombre;
     private String apellidos;
     private Long telefono;
@@ -44,7 +45,7 @@ public class AnuncioDTO {
         this.telefono = telefono;
     }
 
-    public AnuncioDTO(Long id, String titulo, String descripcion, String imagen, Date fecha, String raza, String color, String tamano, Boolean collar, Boolean vacunado, Double latitud, Double longitud, String nombre, String apellidos, Long telefono) {
+    public AnuncioDTO(Long id, String titulo, String descripcion, String imagen, Date fecha, String raza, String color, String tamano, Boolean collar, Boolean vacunado, Double latitud, Double longitud, String nomUsuario, String nombre, String apellidos, Long telefono) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -57,6 +58,7 @@ public class AnuncioDTO {
         this.vacunado = vacunado;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.nomUsuario = nomUsuario;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.telefono = telefono;
@@ -156,6 +158,14 @@ public class AnuncioDTO {
 
     public void setLongitud(Double longitud) {
         this.longitud = longitud;
+    }
+
+    public String getNomUsuario() {
+        return nomUsuario;
+    }
+
+    public void setNomUsuario(String nomUsuario) {
+        this.nomUsuario = nomUsuario;
     }
 
     public String getNombre() {

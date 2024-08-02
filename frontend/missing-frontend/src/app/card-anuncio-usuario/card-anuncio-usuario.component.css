@@ -15,7 +15,23 @@
   object-fit: cover;
 }
 
+.card-header {
+  font-weight: 600;
+  text-align: center;
+}
+
 .custom-badge {
+  padding: 0.4em 0.8em;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.alert {
+  font-size: 0.9rem;
+  padding: 0.8rem;
+}
+
+.tag {
   padding: 0.4em 0.8em;
   font-size: 0.8rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
