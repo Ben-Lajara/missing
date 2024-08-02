@@ -33,15 +33,16 @@ public class UsuarioController {
     private JwtTokenProviderService jwtTokenProviderService;
 
     @PostMapping("/usuario/registro")
-    public ResponseEntity<?> crearUsuario(@RequestParam String nomUsuario, @RequestParam String nombre, @RequestParam String apellidos, @RequestParam Long telefono, @RequestParam String email, @RequestParam String pword) {
+    public ResponseEntity<?> crearUsuario(@RequestParam String email, @RequestParam String nombre, @RequestParam String apellidos, @RequestParam Long telefono, @RequestParam String pword) {
         try {
-            if (usuarioService.findByNomUsuario(nomUsuario) != null) {
-                return ResponseEntity.badRequest().body("Username already exists");
-            } else if (usuarioService.findByEmail(email) != null) {
-                return ResponseEntity.badRequest().body("Email already exists");
+            if (usuarioService.findByEmail(email) != null) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", "error");
+                response.put("message", "User already exists");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
             } else {
                 String pwordHash = BCrypt.hashpw(pword, BCrypt.gensalt());
-                Usuario usuario = new Usuario(nomUsuario, nombre, apellidos, telefono, email, pwordHash);
+                Usuario usuario = new Usuario(email, nombre, apellidos, telefono, pwordHash);
                 usuarioRepository.save(usuario);
                 return new ResponseEntity<>(HttpStatus.CREATED);
             }
@@ -51,26 +52,30 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuario/login")
-    public ResponseEntity<?> login(@RequestParam String nomUsuario, @RequestParam String pword) {
-        Usuario usuario = usuarioService.findByNomUsuario(nomUsuario);
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String pword) {
+        Usuario usuario = usuarioService.findByEmail(email);
+        Map<String, Object> response = new HashMap<>();
         if (usuario == null) {
-            return ResponseEntity.badRequest().body("User not found");
+            response.put("status", "error");
+            response.put("message", "User not found");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } else if (BCrypt.checkpw(pword, usuario.getPword())) {
-            Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
-            response.put("username", usuario.getNomUsuario());
-            String jwt = jwtTokenProviderService.createToken(usuario.getNomUsuario());
+            response.put("username", usuario.getEmail());
+            String jwt = jwtTokenProviderService.createToken(usuario.getEmail());
             response.put("token", jwt);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return ResponseEntity.badRequest().body("Invalid password");
+            response.put("status", "error");
+            response.put("message", "Invalid password");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/usuario/anuncios")
-    public ResponseEntity<?> getAnunciosUsuario(@RequestParam String nomUsuario) {
-        Usuario usuario = usuarioService.findByNomUsuario(nomUsuario);
+    public ResponseEntity<?> getAnunciosUsuario(@RequestParam String email) {
+        Usuario usuario = usuarioService.findByEmail(email);
         if (usuario == null) {
             return ResponseEntity.badRequest().body("User not found");
         } else {

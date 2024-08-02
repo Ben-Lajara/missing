@@ -28,11 +28,10 @@ export class RegistroComponent {
 
   ngOnInit(): void {
     this.registroForm = this.fb.group({
-      nomUsuario: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       nombre: ['', Validators.required],
       apellidos: ['', Validators.required],
       telefono: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
       pword: ['', Validators.required],
     });
   }
@@ -46,21 +45,23 @@ export class RegistroComponent {
       return;
     }
 
-    const { nomUsuario, nombre, apellidos, telefono, email, pword } =
+    const { email, nombre, apellidos, telefono, pword } =
       this.registroForm.value;
 
     this.authService
-      .register(nomUsuario, nombre, apellidos, telefono, email, pword)
+      .register(email, nombre, apellidos, telefono, pword)
       .subscribe(
-        (response) => {
-          if (response.status === 'success') {
-            this.router.navigate(['/login']);
-          } else {
-            // Manejar errores específicos de registro aquí si es necesario
-          }
+        (success) => {
+          console.log('Registration Success');
+          this.authService.login(email, pword).subscribe(
+            (success) => this.router.navigate(['/perfil']),
+            (error) => console.log('Login Error', error.error)
+          );
         },
         (error) => {
-          // Manejar errores de respuesta aquí
+          if (error.message === 'User already exists') {
+            this.registroForm.get('email')?.setErrors({ exists: true });
+          }
         }
       );
   }

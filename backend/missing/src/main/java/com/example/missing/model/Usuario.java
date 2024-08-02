@@ -10,11 +10,10 @@ import java.util.List;
 @Entity
 public class Usuario {
     @Id
-    private String nomUsuario;
+    private String email;
     private String nombre;
     private String apellidos;
     private Long telefono;
-    private String email;
     private String pword;
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Anuncio> anuncios;
@@ -22,8 +21,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nomUsuario, String nombre, String apellidos, Long telefono, String email, String pword) {
-        this.nomUsuario = nomUsuario;
+    public Usuario(String email, String nombre, String apellidos, Long telefono, String pword) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.telefono = telefono;
@@ -31,13 +29,7 @@ public class Usuario {
         this.pword = pword;
     }
 
-    public String getNomUsuario() {
-        return nomUsuario;
-    }
 
-    public void setNomUsuario(String nomUsuario) {
-        this.nomUsuario = nomUsuario;
-    }
 
     public String getNombre() {
         return nombre;

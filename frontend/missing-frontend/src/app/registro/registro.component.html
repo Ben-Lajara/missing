@@ -4,10 +4,16 @@
         <h5 class="mb-3 text-center">Regístrate</h5>
         <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="form-group">
           <div class="mb-3">
-            <label for="nomUsuario" class="form-label">Nombre de usuario</label>
-            <input type="text" formControlName="nomUsuario" class="form-control" id="nomUsuario" placeholder="Elige un nombre de usuario" required>
-            <div *ngIf="registroForm.get('nomUsuario')?.touched && registroForm.get('nomUsuario')?.hasError('required')" class="text-danger">
-              El nombre de usuario es obligatorio
+            <label for="email" class="form-label">Email</label>
+            <input type="email" formControlName="email" class="form-control" id="email" placeholder="Introduce tu email" required>
+            <div *ngIf="registroForm.get('email')?.touched && registroForm.get('email')?.hasError('required')" class="text-danger">
+              El email es obligatorio
+            </div>
+            <div *ngIf="registroForm.get('email')?.hasError('email')" class="text-danger">
+              El formato del email no es válido
+            </div>
+            <div *ngIf="registroForm.get('email')?.hasError('exists')" class="text-danger">
+              La cuenta ya existe
             </div>
           </div>
           <div class="mb-3">
@@ -30,17 +36,7 @@
             <div *ngIf="registroForm.get('telefono')?.touched && registroForm.get('telefono')?.hasError('required')" class="text-danger">
               El teléfono es obligatorio
             </div>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" formControlName="email" class="form-control" id="email" placeholder="Introduce tu email" required>
-            <div *ngIf="registroForm.get('email')?.touched && registroForm.get('email')?.hasError('required')" class="text-danger">
-              El email es obligatorio
-            </div>
-            <div *ngIf="registroForm.get('email')?.hasError('email')" class="text-danger">
-              El formato del email no es válido
-            </div>
-          </div>
+          </div>          
           <div class="mb-3">
             <label for="pword" class="form-label">Contraseña</label>
             <input type="password" formControlName="pword" class="form-control" id="pword" placeholder="Elige una contraseña" required>

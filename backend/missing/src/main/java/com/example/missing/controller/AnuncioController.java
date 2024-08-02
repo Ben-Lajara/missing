@@ -40,15 +40,15 @@ public class AnuncioController {
         List<Anuncio> anuncios = anuncioService.findWithinRadius(latitude, longitude, radius);
         List<AnuncioDTO> anunciosDTO = new ArrayList<>();
         for (Anuncio anuncio: anuncios) {
-            AnuncioDTO anuncioDTO = new AnuncioDTO(anuncio.getId(), anuncio.getTitulo(), anuncio.getDescripcion(), String.format("/images/%d", anuncio.getId()), anuncio.getFecha(), anuncio.getRaza(), anuncio.getColor(), anuncio.getTamano(), anuncio.getCollar(), anuncio.getVacunado(), anuncio.getLatitud(), anuncio.getLongitud(), anuncio.getUsuario().getNomUsuario(), anuncio.getUsuario().getNombre(), anuncio.getUsuario().getApellidos(), anuncio.getUsuario().getTelefono());
+            AnuncioDTO anuncioDTO = new AnuncioDTO(anuncio.getId(), anuncio.getTitulo(), anuncio.getDescripcion(), String.format("/images/%d", anuncio.getId()), anuncio.getFecha(), anuncio.getRaza(), anuncio.getColor(), anuncio.getTamano(), anuncio.getCollar(), anuncio.getVacunado(), anuncio.getLatitud(), anuncio.getLongitud(), anuncio.getUsuario().getEmail(), anuncio.getUsuario().getNombre(), anuncio.getUsuario().getApellidos(), anuncio.getUsuario().getTelefono());
             anunciosDTO.add(anuncioDTO);
         }
         return ResponseEntity.ok(anunciosDTO);
     }
 
     @PostMapping("/anuncio")
-    public ResponseEntity<?> postAnuncio(@RequestParam String titulo, @RequestParam String descripcion, @RequestParam MultipartFile imagen, @RequestParam String fecha, @RequestParam String raza, @RequestParam String color, @RequestParam String tamano, @RequestParam Boolean collar, @RequestParam Boolean vacunado, @RequestParam Double latitude, @RequestParam Double longitude, @RequestParam String nomUsuario) throws ParseException, IOException {
-        Usuario usuario = usuarioService.findByNomUsuario(nomUsuario);
+    public ResponseEntity<?> postAnuncio(@RequestParam String titulo, @RequestParam String descripcion, @RequestParam MultipartFile imagen, @RequestParam String fecha, @RequestParam String raza, @RequestParam String color, @RequestParam String tamano, @RequestParam Boolean collar, @RequestParam Boolean vacunado, @RequestParam Double latitude, @RequestParam Double longitude, @RequestParam String email) throws ParseException, IOException {
+        Usuario usuario = usuarioService.findByEmail(email);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaFormateada = formatter.parse((String) fecha);
         byte[] imagenBytes = imagen.getBytes();
@@ -60,21 +60,21 @@ public class AnuncioController {
     @GetMapping("/anuncio/{id}")
     public ResponseEntity<?> getAnuncioById(@PathVariable Long id) {
         Anuncio anuncio = anuncioRepository.findById(id);
-        Usuario usuario = usuarioService.findByNomUsuario(anuncio.getUsuario().getNomUsuario());
+        Usuario usuario = usuarioService.findByEmail(anuncio.getUsuario().getEmail());
         String imagenUrl = String.format("/images/%d", anuncio.getId());
-        AnuncioDTO anuncioDTO = new AnuncioDTO(anuncio.getId(), anuncio.getTitulo(), anuncio.getDescripcion(), imagenUrl, anuncio.getFecha(), anuncio.getRaza(), anuncio.getColor(), anuncio.getTamano(), anuncio.getCollar(), anuncio.getVacunado(), anuncio.getLatitud(), anuncio.getLongitud(), usuario.getNomUsuario(), usuario.getNombre(), usuario.getApellidos(), usuario.getTelefono());
+        AnuncioDTO anuncioDTO = new AnuncioDTO(anuncio.getId(), anuncio.getTitulo(), anuncio.getDescripcion(), imagenUrl, anuncio.getFecha(), anuncio.getRaza(), anuncio.getColor(), anuncio.getTamano(), anuncio.getCollar(), anuncio.getVacunado(), anuncio.getLatitud(), anuncio.getLongitud(), usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(), usuario.getTelefono());
         return ResponseEntity.ok(anuncioDTO);
     }
 
     @PutMapping("/anuncio")
-    public ResponseEntity<?> editAnuncio(@RequestParam Long id, @RequestParam String titulo, @RequestParam String descripcion,  @RequestParam String fecha, @RequestParam String raza, @RequestParam String color, @RequestParam String tamano, @RequestParam Boolean collar, @RequestParam Boolean vacunado,@RequestParam String nomUsuario, @RequestHeader("Authorization") String token) throws ParseException, IOException {
+    public ResponseEntity<?> editAnuncio(@RequestParam Long id, @RequestParam String titulo, @RequestParam String descripcion,  @RequestParam String fecha, @RequestParam String raza, @RequestParam String color, @RequestParam String tamano, @RequestParam Boolean collar, @RequestParam Boolean vacunado,@RequestParam String email, @RequestHeader("Authorization") String token) throws ParseException, IOException {
        if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
-        if(!nomUsuario.equals(jwtTokenProviderService.getUsernameFromJwt(token))){
+        if(!email.equals(jwtTokenProviderService.getEmailFromJwt(token))){
             return new ResponseEntity<>(Collections.singletonMap("error", "Invalid or expired token"), HttpStatus.UNAUTHORIZED);
         }
-        Usuario usuario = usuarioService.findByNomUsuario(nomUsuario);
+        Usuario usuario = usuarioService.findByEmail(email);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaFormateada = formatter.parse((String) fecha);
         Anuncio anuncio = anuncioRepository.findById(id);
@@ -91,11 +91,11 @@ public class AnuncioController {
     }
 
     @DeleteMapping("/anuncio")
-    public ResponseEntity<?> deleteAnuncio(@RequestParam Long id, @RequestParam String nomUsuario, @RequestHeader("Authorization") String token){
+    public ResponseEntity<?> deleteAnuncio(@RequestParam Long id, @RequestParam String email, @RequestHeader("Authorization") String token){
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
-        if(!nomUsuario.equals(jwtTokenProviderService.getUsernameFromJwt(token))){
+        if(!email.equals(jwtTokenProviderService.getEmailFromJwt(token))){
             return new ResponseEntity<>(Collections.singletonMap("error", "Invalid or expired token"), HttpStatus.UNAUTHORIZED);
         }
         Anuncio anuncio = anuncioRepository.findById(id);

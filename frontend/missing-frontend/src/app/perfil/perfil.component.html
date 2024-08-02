@@ -1,7 +1,13 @@
-<div class="container">
-    <div class="d-flex flex-wrap justify-content-start" [@listAnimation]="anuncios.length">
+<div class="container mt-3">
+    <h3 class="section-title">Mis anuncios</h3>
+    <div *ngIf="anuncios.length>0" class="d-flex flex-wrap justify-content-start" [@listAnimation]="anuncios.length">
         <div *ngFor="let anuncio of anuncios" class="card-container">
             <app-card-anuncio-usuario [anuncio]="anuncio"></app-card-anuncio-usuario>
         </div>        
+    </div>
+    <div *ngIf="anuncios.length == 0">
+        <div class="alert alert-info" role="alert">
+            No tienes anuncios publicados
+        </div>
     </div>
 </div>

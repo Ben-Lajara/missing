@@ -84,7 +84,7 @@ export class EditarComponent implements OnInit {
           },
           params: {
             id: this.id,
-            nomUsuario: this.anuncio.nomUsuario,
+            email: this.anuncio.email,
           },
         })
         .subscribe(
@@ -122,7 +122,7 @@ export class EditarComponent implements OnInit {
             tamano: this.tamano,
             collar: this.collar,
             vacunado: this.vacunado,
-            nomUsuario: this.anuncio.nomUsuario,
+            email: this.anuncio.email,
           },
         }
       )

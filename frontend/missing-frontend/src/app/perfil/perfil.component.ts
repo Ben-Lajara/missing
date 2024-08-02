@@ -33,19 +33,20 @@ export class PerfilComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    this.anuncios = [];
     console.log(localStorage.getItem('username'));
     this.getAnuncios();
   }
 
   getAnuncios() {
-    const nomUsuario = localStorage.getItem('username');
-    if (nomUsuario === null) {
+    const email = localStorage.getItem('username');
+    if (email === null) {
       return;
     }
     this.http
       .get('http://localhost:8080/usuario/anuncios', {
         params: {
-          nomUsuario: nomUsuario,
+          email: email,
         },
       })
       .subscribe((res) => {

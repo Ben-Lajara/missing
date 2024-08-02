@@ -227,7 +227,7 @@ export class PublicarComponent implements AfterViewInit, OnInit {
     );
     formData.append('latitude', this.latitud.toString());
     formData.append('longitude', this.longitud.toString());
-    formData.append('nomUsuario', localStorage.getItem('username') || '');
+    formData.append('email', localStorage.getItem('username') || '');
     console.log('formData', formData);
     this.loading = true;
     this.http

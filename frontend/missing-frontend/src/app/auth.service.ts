@@ -41,49 +41,65 @@ export class AuthService {
   }
 
   register(
-    nomUsuario: string,
+    email: string,
     nombre: string,
     apellidos: string,
     telefono: number,
-    email: string,
     pword: string
   ): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/usuario/registro`,
-      {},
-      {
-        params: {
-          nomUsuario: nomUsuario,
-          nombre: nombre,
-          apellidos: apellidos,
-          telefono: telefono,
-          email: email,
-          pword: pword,
-        },
-      }
-    );
-  }
-
-  login(nombre: string, pword: string): Observable<any> {
     return this.http
       .post(
-        `${this.apiUrl}/usuario/login`,
+        `${this.apiUrl}/usuario/registro`,
         {},
         {
           params: {
-            nomUsuario: nombre,
+            email: email,
+            nombre: nombre,
+            apellidos: apellidos,
+            telefono: telefono,
             pword: pword,
           },
         }
       )
       .pipe(
         catchError((error) => {
-          return throwError(error); // Propagar el error para que se maneje en el componente LoginComponent
-        }),
-        tap((data: any) => {
+          let errorMsg = 'Unknown error';
+          if (error.error?.message) {
+            errorMsg = error.error.message;
+          } else if (error.message) {
+            errorMsg = error.message;
+          }
+          return throwError(() => new Error(errorMsg));
+        })
+      );
+  }
+
+  login(email: string, pword: string): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this.apiUrl}/usuario/login`,
+        {},
+        {
+          params: {
+            email: email,
+            pword: pword,
+          },
+        }
+      )
+      .pipe(
+        tap((data) => {
           if (data.status === 'success') {
             this.setSession(data.username, data.token);
           }
+        }),
+        catchError((error) => {
+          let errorMsg = 'Unknown error';
+          if (error.error?.message) {
+            errorMsg = error.error.message;
+          } else if (error.message) {
+            errorMsg = error.message;
+          }
+          return throwError(() => new Error(errorMsg));
         })
       );
   }

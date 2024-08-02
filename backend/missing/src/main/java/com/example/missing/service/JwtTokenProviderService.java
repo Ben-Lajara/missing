@@ -17,14 +17,14 @@ public class JwtTokenProviderService {
         this.clave = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    public String createToken(String nombreUsuario) {
+    public String createToken(String email) {
         return Jwts.builder()
-                .setSubject(nombreUsuario)
+                .setSubject(email)
                 .signWith(clave)
                 .compact();
     }
 
-    public String getUsernameFromJwt(String token) {
+    public String getEmailFromJwt(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(clave)
                 .build()
@@ -33,5 +33,6 @@ public class JwtTokenProviderService {
 
         return claims.getSubject();
     }
+
 
 }

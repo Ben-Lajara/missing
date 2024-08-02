@@ -4,13 +4,13 @@
         <h5 class="mb-3 text-center">Inicia sesión</h5>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-group">
           <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre de usuario</label>
-            <input type="text" formControlName="nombre" class="form-control" id="nombre" placeholder="Introduce tu nombre de usuario" required>
-            <div *ngIf="loginForm.get('nombre')?.touched && loginForm.get('nombre')?.hasError('required')" class="text-danger">
-              El nombre de usuario es obligatorio
+            <label for="email" class="form-label">Email</label>
+            <input type="text" formControlName="email" class="form-control" id="email" placeholder="Introduce tu email" required>
+            <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')" class="text-danger">
+              El email es obligatorio
             </div>
-            <div *ngIf="loginForm.get('nombre')?.hasError('exists')" class="text-danger">
-              El nombre de usuario no existe
+            <div *ngIf="loginForm.get('email')?.hasError('exists')" class="text-danger">
+              La cuenta no existe
             </div>
           </div>
           <div class="mb-3">

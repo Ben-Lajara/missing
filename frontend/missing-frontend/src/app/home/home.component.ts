@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit {
   loading: boolean = false;
   ngOnInit(): void {
     this.loading = true;
+    this.anuncios = [];
     this.getUbicacion();
   }
 

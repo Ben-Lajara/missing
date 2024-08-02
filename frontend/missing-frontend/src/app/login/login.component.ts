@@ -19,11 +19,11 @@ import { animate, style, transition, trigger } from '@angular/animations';
   ],
 })
 export class LoginComponent {
-  nombre = '';
+  email = '';
   pword = '';
   restablecer = false;
   error = false;
-  nombreError = '';
+  emailError = '';
   pwordError = '';
   loginForm!: FormGroup;
 
@@ -36,7 +36,7 @@ export class LoginComponent {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      nombre: ['', Validators.required],
+      email: ['', Validators.required],
       pword: ['', Validators.required],
     });
   }
@@ -50,24 +50,20 @@ export class LoginComponent {
       return;
     }
 
-    const { nombre, pword } = this.loginForm.value;
+    const { email, pword } = this.loginForm.value;
 
-    this.authService.login(nombre, pword).subscribe(
+    this.authService.login(email, pword).subscribe(
       (response) => {
+        console.log('Response: ', response);
         if (response.status === 'success') {
           this.router.navigate(['/home']);
-        } else {
-          if (response.error === 'User not found') {
-            this.loginForm.get('nombre')?.setErrors({ exists: true });
-          } else if (response.error === 'Incorrect password') {
-            this.loginForm.get('pword')?.setErrors({ incorrect: true });
-          }
         }
       },
       (error) => {
-        if (error.error.error === 'User not found') {
-          this.loginForm.get('nombre')?.setErrors({ exists: true });
-        } else if (error.error.error === 'Incorrect password') {
+        console.log('Error: ', error.message);
+        if (error.message === 'User not found') {
+          this.loginForm.get('email')?.setErrors({ exists: true });
+        } else if (error.message === 'Invalid password') {
           this.loginForm.get('pword')?.setErrors({ incorrect: true });
         }
       }

@@ -10,9 +10,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public Usuario findByNomUsuario(String nomUsuario) {
+    /*public Usuario findByNomUsuario(String nomUsuario) {
         return usuarioRepository.findByNomUsuario(nomUsuario);
-    }
+    }*/
 
     public Usuario findByEmail(String email) {
         return usuarioRepository.findByEmail(email);
