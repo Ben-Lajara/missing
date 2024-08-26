@@ -26,7 +26,7 @@ public class ImagenController {
         if (anuncioOptional.isPresent()) {
             Anuncio anuncio = anuncioOptional.get();
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG); // O el tipo de imagen correspondiente
+            headers.setContentType(MediaType.IMAGE_JPEG);
             headers.setContentLength(anuncio.getImagen().length);
             return new ResponseEntity<>(anuncio.getImagen(), headers, HttpStatus.OK);
         } else {

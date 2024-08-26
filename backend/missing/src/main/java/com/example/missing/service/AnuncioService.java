@@ -15,4 +15,12 @@ public class AnuncioService {
     public List<Anuncio> findWithinRadius(Double latitude, Double longitude, Double radius) {
         return anuncioRepository.findWithinRadius(latitude, longitude, radius);
     }
+
+    public int count(){
+        return (int) anuncioRepository.count();
+    }
+
+    public void save(Anuncio anuncio){
+        anuncioRepository.save(anuncio);
+    }
 }

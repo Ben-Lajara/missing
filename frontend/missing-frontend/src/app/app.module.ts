@@ -14,10 +14,8 @@ import { DetallesComponent } from './detalles/detalles.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// Gestures
 import { HAMMER_GESTURE_CONFIG, HammerModule } from '@angular/platform-browser';
 
-/** Import Alyle UI */
 import {
   LyTheme2,
   StyleRenderer,
@@ -26,7 +24,6 @@ import {
   LyHammerGestureConfig,
 } from '@alyle/ui';
 
-/** Import the component modules */
 import { LyButtonModule } from '@alyle/ui/button';
 import { LyToolbarModule } from '@alyle/ui/toolbar';
 import { LyImageCropperModule } from '@alyle/ui/image-cropper';
@@ -39,6 +36,7 @@ import { CollarPipe } from './collar.pipe';
 import { PerfilComponent } from './perfil/perfil.component';
 import { CardAnuncioUsuarioComponent } from './card-anuncio-usuario/card-anuncio-usuario.component';
 import { EditarComponent } from './editar/editar.component';
+import { SinResultadosComponent } from './sin-resultados/sin-resultados.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +56,7 @@ import { EditarComponent } from './editar/editar.component';
     PerfilComponent,
     CardAnuncioUsuarioComponent,
     EditarComponent,
+    SinResultadosComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,12 +74,10 @@ import { EditarComponent } from './editar/editar.component';
   providers: [
     [LyTheme2],
     [StyleRenderer],
-    // Theme that will be applied to this module
     { provide: LY_THEME_NAME, useValue: 'minima-light' },
-    { provide: LY_THEME, useClass: MinimaLight, multi: true }, // name: `minima-light`
-    { provide: LY_THEME, useClass: MinimaDark, multi: true }, // name: `minima-dark`
-    // Gestures
-    { provide: HAMMER_GESTURE_CONFIG, useClass: LyHammerGestureConfig }, // Required for <ly-carousel>],
+    { provide: LY_THEME, useClass: MinimaLight, multi: true },
+    { provide: LY_THEME, useClass: MinimaDark, multi: true },
+    { provide: HAMMER_GESTURE_CONFIG, useClass: LyHammerGestureConfig },
   ],
   bootstrap: [AppComponent],
 })

@@ -1,0 +1,11 @@
+.aviso {
+  border-radius: 1rem;
+  background-color: #2b3035;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 2rem;
+}
+
+h1 {
+  font-weight: 600;
+}

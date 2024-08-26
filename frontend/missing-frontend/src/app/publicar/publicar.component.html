@@ -30,7 +30,6 @@
             <div class="row">
                 <div class="col-md-6 mb-2">
                     <label for="tamano">Tamaño</label>
-                    <!--<input type="text" formControlName="tamano" class="form-control" id="tamano" placeholder="Tamaño">-->
                     <select formControlName="tamano" class="form-select" id="tamano">
                         <option value="0">Selecciona un tamaño</option>
                         <option value="Pequeño">Pequeño</option>
@@ -75,28 +74,39 @@
         <div class="mb-3">
             <h4>Imagen <span class="text-danger">*</span></h4>
             <input #fileInput type="file" (change)="cropper.selectInputEvent($event)" accept="image/*" hidden>
-            <button class="btn btn-outline-primary" (click)="fileInput.click()">
-                <span>Seleccionar imagen</span>
+            <button class="btn btn-outline-success" (click)="fileInput.click()">
+                <span><i class="bi bi-image"></i> Seleccionar imagen</span>
             </button>
-            <div *ngIf="ready">
-                <button (click)="cropper.rotate(-90)" ly-button appearance="icon">Rotar</button>
+            <div *ngIf="ready" class="mt-2 mb-2">
+                <button (click)="cropper.rotate(-90)" class="btn btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Rotar</button>
+                &nbsp;
+                <button type="button" class="btn btn-warning" *ngIf="ready" (click)="cropper.crop()"><i class="bi bi-crop"></i> Recortar</button>
             </div>
-            <ly-img-cropper
-                [config]="myConfig"
-                (ready)="ready = true"
-                (cleaned)="ready = false"
-                (cropped)="onCropped($event)"
-                (loaded)="onLoaded($event)"
-                (error)="onError($event)"
-            >
-                <span>Arrastrar imagen</span>
-            </ly-img-cropper>
-            <button type="button" ly-button *ngIf="ready" color="accent" (click)="cropper.crop()">Recortar</button>
-            <div *ngIf="croppedImage">
-                <img [src]="croppedImage">
+            
+            <div class="d-flex mt-2">
+                <!-- Cropper -->
+                <div class="flex-grow-1">
+                    <ly-img-cropper
+                        [config]="myConfig"
+                        (ready)="ready = true"
+                        (cleaned)="ready = false"
+                        (cropped)="onCropped($event)"
+                        (loaded)="onLoaded($event)"
+                        (error)="onError($event)"
+                    >
+                        <span>Arrastrar imagen</span>
+                    </ly-img-cropper>
+                </div>
+                
+                <!-- Imagen recortada -->
+                <div class="ml-3">
+                    <div *ngIf="croppedImage">
+                        <img [src]="croppedImage" class="img-thumbnail">
+                    </div>
+                </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary w-100" [disabled]="anuncioForm.invalid || !hayCoordenadas || !hayImagen">Publicar</button>
+        <button type="submit" class="btn btn-primary w-100 mb-4" [disabled]="anuncioForm.invalid || !hayCoordenadas || !hayImagen">Publicar</button>
     </form>
 </div>
 <div *ngIf="loading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">

@@ -28,3 +28,10 @@
   overflow: hidden; /* Oculta el texto que desborde el contenedor */
   text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es demasiado largo */
 }
+
+@media (max-width: 768px) {
+  .filtros-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

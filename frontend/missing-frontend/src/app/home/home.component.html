@@ -7,6 +7,7 @@
     </div>
     
     <div class="d-flex flex-wrap justify-content-start" [@listAnimation]="anuncios.length">
+        <app-sin-resultados *ngIf="(anuncios | tamano: getSize() | color: getColor() | raza: getRace() | collar: hasCollar()).length === 0" class="w-100"></app-sin-resultados>
         <div *ngFor="let anuncio of anuncios | tamano: getSize() | color: getColor() | raza: getRace() | collar: hasCollar()" class="card-container">
             <app-card-anuncio [anuncio]="anuncio"></app-card-anuncio>
         </div>        

@@ -17,7 +17,7 @@ public class Anuncio {
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB")
     private byte[] imagen;
-    //private String imagen;
+
     private Date fecha;
     private String raza;
     private String color;
