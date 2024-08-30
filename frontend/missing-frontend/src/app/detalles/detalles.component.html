@@ -7,28 +7,23 @@
                   <ul class="list-group list-group-flush bg-dark">
                     <li class="list-group-item bg-dark text-white d-flex">
                       <span><i class="bi bi-broadcast"></i></span>
-                      &nbsp;
                       <span>{{anuncio.raza}}</span>
                     </li>
                     <li class="list-group-item bg-dark text-white d-flex">
                       <span><i class="bi bi-palette-fill"></i></span>
-                      &nbsp;
                       <span>{{anuncio.color}}</span>
                     </li>
                     <li class="list-group-item bg-dark text-white d-flex">
                       <span><i class="bi bi-arrows-fullscreen"></i></span>
-                      &nbsp;
                       <span>{{anuncio.tamano}}</span>
                     </li>
                     <li class="list-group-item bg-dark text-white d-flex">
                       <span><i class="bi bi-flag-fill"></i></span>
-                      &nbsp;
                       <span *ngIf="anuncio.collar == true">Lleva collar</span>
                       <span *ngIf="anuncio.collar == false">No lleva collar</span>
                     </li>
                     <li class="list-group-item bg-dark text-white d-flex">
                       <span><i class="bi bi-activity"></i></span>
-                      &nbsp;
                       <span *ngIf="anuncio.vacunado == true">Está vacunado</span>
                       <span *ngIf="anuncio.vacunado == false">No está vacunado</span>
                     </li>
