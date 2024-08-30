@@ -36,12 +36,25 @@
             <div *ngIf="registroForm.get('telefono')?.touched && registroForm.get('telefono')?.hasError('required')" class="text-danger">
               El teléfono es obligatorio
             </div>
+            <div *ngIf="registroForm.get('telefono')?.touched && registroForm.get('telefono')?.hasError('pattern')" class="text-danger">
+              Introduce un número de teléfono válido
+            </div>
           </div>          
           <div class="mb-3">
             <label for="pword" class="form-label">Contraseña</label>
             <input type="password" formControlName="pword" class="form-control" id="pword" placeholder="Elige una contraseña" required>
             <div *ngIf="registroForm.get('pword')?.touched && registroForm.get('pword')?.hasError('required')" class="text-danger">
               La contraseña es obligatoria
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="pword2" class="form-label">Repite la contraseña</label>
+            <input type="password" formControlName="pword2" class="form-control" id="pword2" placeholder="Repite la contraseña" required>
+            <div *ngIf="registroForm.get('pword2')?.touched && registroForm.get('pword2')?.hasError('required')" class="text-danger">
+              Debes repetir la contraseña
+            </div>
+            <div *ngIf="registroForm.hasError('notSame') && (registroForm.get('pword2')?.touched || registroForm.get('pword')?.touched)" class="text-danger">
+              Las contraseñas no coinciden
             </div>
           </div>
           <button type="submit" class="btn btn-primary w-100" [disabled]="registroForm.invalid">Registrarse</button>

@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -18,7 +23,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
   ],
 })
 export class RegistroComponent {
-  registroForm!: FormGroup;
+  registroForm!: UntypedFormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -27,13 +32,23 @@ export class RegistroComponent {
   ) {}
 
   ngOnInit(): void {
-    this.registroForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      nombre: ['', Validators.required],
-      apellidos: ['', Validators.required],
-      telefono: ['', Validators.required],
-      pword: ['', Validators.required],
-    });
+    this.registroForm = this.fb.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        nombre: ['', Validators.required],
+        apellidos: ['', Validators.required],
+        telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
+        pword: ['', Validators.required],
+        pword2: ['', Validators.required],
+      },
+      { validator: this.checkPwords }
+    );
+  }
+
+  checkPwords(group: UntypedFormGroup) {
+    const pass = group.get('pword')?.value;
+    const confirmPass = group.get('pword2')?.value;
+    return pass === confirmPass ? null : { notSame: true };
   }
 
   onSubmit(): void {

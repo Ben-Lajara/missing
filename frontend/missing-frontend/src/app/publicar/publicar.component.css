@@ -1,0 +1,11 @@
+.cropper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .cropper {
+    flex-direction: column;
+  }
+}
